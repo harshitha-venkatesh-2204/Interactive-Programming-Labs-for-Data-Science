@@ -1,0 +1,100 @@
+---
+title: "Lab3-InputOuput"
+output: html_document
+date: "2024-01-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+#### Question 1. 
+
+Write a function that loops over each item in the input and prints it out on a new line. Specify the default input of the integers from 1 to 5, written 1:5.
+
+```{r}
+printEachItem <- function(input = 1:5) {
+  for (item in input) {
+    cat(item, "\n")
+  }
+}
+
+printEachItem()
+
+
+
+```
+
+#### Question 2. 
+
+Rewrite rescale01 from second ungraded lab to check for whether the inputs are numeric and stop if they aren’t with the message “inputs must all be numeric”.
+
+```{r}
+rescale01 <- function(x) {
+  # Check if inputs are numeric
+  if (!all(is.numeric(x))) {
+    stop("inputs must all be numeric")
+  }
+
+  # Rescale to [0, 1]
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+# Example usage
+numeric_vector <- c(1, 2, 3, 4, 5)
+result_numeric <- rescale01(numeric_vector)
+print(result_numeric)
+
+non_numeric_vector <- c("a", "b", "c")
+result_non_numeric <- rescale01(non_numeric_vector)
+# This will stop with the message "inputs must all be numeric"
+
+
+```
+
+
+#### Question 3. 
+
+What will the following code return and why? Be specific and walk through the input values and how they change or don’t change at each step until you get to what the function returns.
+
+```
+multiple_conditions <- function(x, y){
+  if(x < y){
+    x <- x*2
+    }
+  if(y > x) {
+    output <- y/2
+    }
+  else{
+    output <- y
+  }
+}
+multiple_conditions(2, 6)
+multiple_conditions(2, 3.2)
+multiple_conditions(2, 1)
+```
+
+```{r}
+
+multiple_conditions <- function(x, y){
+  if (x < y) {
+    x <- x*2
+  }
+  
+  if (y > x) {
+    output <- y/2
+  } else {
+    output <- y
+  }
+  
+  print(output)  
+}
+multiple_conditions(2, 6)   # Prints 3
+multiple_conditions(2, 3.2) # Prints 3.2
+multiple_conditions(2, 1)   # Prints 1
+
+
+```
+
+

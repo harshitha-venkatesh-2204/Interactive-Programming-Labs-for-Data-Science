@@ -1,0 +1,158 @@
+---
+title: "Lab7-Data Analysis"
+output:
+  pdf_document: default
+  html_document: default
+date: "2024-01-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "Data Analysis Lab"
+output: pdf_document
+---
+
+##### Assignment Instructions
+
+Complete all questions below. After completing the assignment, knit your document, and download both your .Rmd and knitted output. Upload your files for peer review. 
+
+For each response, include comments detailing your response and what each line does. 
+
+---
+
+##### Question 1. 
+
+Using the nycflights13 dataset, find all flights that departed in July, August, or September using the helper function between(). 
+
+```{r question-1-response}
+library(nycflights13)
+library(dplyr)
+
+# Load the nycflights13 dataset
+data("flights")
+
+# Filter flights that departed in July, August, or September
+summer_flights <- flights %>%
+  filter(between(month, 7, 9))
+
+# View the resulting dataset
+head(summer_flights)
+
+```
+
+
+#### Question 2. 
+
+Using the nycflights13 dataset sort flights to find the 10 flights that flew the furthest. Put them in order of fastest to slowest.
+
+```{r question-2-response}
+library(nycflights13)
+library(dplyr)
+
+# Load the nycflights13 dataset
+data("flights")
+
+# Calculate distance in miles per minute
+flights <- flights %>%
+  mutate(speed = distance / air_time)
+
+# Arrange the flights from fastest to slowest
+fastest_flights <- flights %>%
+  arrange(desc(speed)) %>%
+  head(10)
+
+# View the resulting dataset
+fastest_flights
+
+
+```
+
+#### Question 3. 
+
+Using the nycflights13 dataset, calculate a new variable called "hr_delay" and arrange the flights dataset in order of the arrival delays in hours (longest delays at the top). Put the new variable you created just before the departure time.Hint: use the experimental argument .before. 
+
+```{r question-3-response}
+
+library(nycflights13)
+library(dplyr)
+
+# Load the nycflights13 dataset
+data("flights")
+
+# Calculate the new variable "hr_delay" in hours
+flights <- flights %>%
+  mutate(hr_delay = arr_delay / 60)
+
+# Arrange the flights dataset in order of arrival delays with "hr_delay" before departure time
+flights <- flights %>%
+  arrange(desc(hr_delay)) %>%
+  select(hr_delay, everything())
+
+# View the resulting dataset
+head(flights)
+
+
+```
+
+##### Question 4.
+
+Using the nycflights13 dataset, find the most popular destinations (those with more than 2000 flights) and show the destination, the date info, the carrier. Then show just the number of flights for each popular destination.
+
+```{r question-4-response}
+library(nycflights13)
+library(dplyr)
+
+# Load the nycflights13 dataset
+data("flights")
+
+# Find the most popular destinations (those with more than 2000 flights)
+popular_destinations <- flights %>%
+  group_by(dest) %>%
+  filter(n() > 2000)
+
+# Display destination, date info, carrier, and the number of flights for each popular destination
+result <- popular_destinations %>%
+  select(dest, year, month, day, carrier, flight) %>%
+  group_by(dest, year, month, day, carrier, .groups = 'drop') %>%
+  summarise(num_flights = n())
+
+# View the resulting dataset
+head(result)
+
+
+
+```
+
+#### Question 5. 
+
+Using the nycflights13 dataset, find the flight information (flight number, origin, destination, carrier, number of flights in the year, and percent late) for the flight numbers with the highest percentage of arrival delays. Only include the flight numbers that have over 100 flights in the year.
+
+```{r question-5-response}
+library(nycflights13)
+library(dplyr)
+
+# Load the nycflights13 dataset
+data("flights")
+
+# Filter flights with over 100 flights in the year
+flights_over_100 <- flights %>%
+  group_by(year, flight) %>%
+  filter(n() > 100)
+
+# Calculate the percent late for each flight
+flights_percent_late <- flights_over_100 %>%
+  group_by(flight, origin, dest, carrier) %>%
+  summarise(
+    num_flights = n(),
+    percent_late = mean(arr_delay > 0, na.rm = TRUE) * 100
+  ) %>%
+  arrange(desc(percent_late))
+
+# Display flight information for flight numbers with the highest percentage of arrival delays
+head(flights_percent_late)
+
+
+```

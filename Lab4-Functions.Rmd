@@ -1,0 +1,182 @@
+---
+title: "Lab4-Functions"
+output:
+  pdf_document: default
+  html_document: default
+date: "2024-01-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+##### Question 1. 
+
+Review the roll functions from Section 2 in *Hands-On Programming in R*. Using these functions as an example, create a function that produces a histogram of 50,000 rolls of three 8 sided dice. Each die is loaded so that the number 7 has a higher probability of being rolled than the other numbers, assume all other sides of the die have a 1/10 probability of being rolled. 
+
+Your function should contain the arguments `max_rolls`, `sides`, and `num_of_dice`. You may wish to set some of the arguments to default values. 
+
+```{r}
+loaded_dice_histogram <- function(max_rolls = 50000, sides = 8, num_of_dice = 3) {
+  probabilities <- rep(1/10, sides)
+  probabilities[7] <- 3/10
+
+  rolls <- matrix(sample(1:sides, num_of_dice * max_rolls, replace = TRUE, prob = probabilities), ncol = num_of_dice)
+  sums <- rowSums(rolls)
+
+ 
+  hist(sums, breaks = seq(num_of_dice, sides * num_of_dice, by = 1), col = "skyblue", border = "black", xlab = "Sum of Dice", ylab = "Frequency", main = "Loaded Dice Histogram")
+}
+loaded_dice_histogram()
+
+
+```
+
+
+##### Question 2. 
+
+Write a function, rescale01(), that recieves a vector as an input and checks that the inputs are all numeric. If the input vector is numeric, map any -Inf and Inf values to 0 and 1, respectively. If the input vector is non-numeric, stop the function and return the message "inputs must all be numeric".
+
+Be sure to thoroughly provide test cases. Additionally, ensure to allow your response chunk to return error messages.
+
+```{r}
+rescale01 <- function(x) {
+  if (!all(is.numeric(x))) {
+    stop("inputs must all be numeric")
+  }
+
+  # Map -Inf to 0 and Inf to 1
+  x[x == -Inf] <- 0
+  x[x == Inf] <- 1
+
+  # Rescale to [0, 1]
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+# Test cases
+
+# Numeric input
+numeric_vector <- c(1, 2, 3, 4, 5)
+result_numeric <- rescale01(numeric_vector)
+print(result_numeric)
+
+# Numeric input with -Inf and Inf
+numeric_vector_inf <- c(1, -Inf, 3, Inf, 5)
+result_inf <- rescale01(numeric_vector_inf)
+print(result_inf)
+
+# Non-numeric input
+non_numeric_vector <- c("a", "b", "c")
+tryCatch(
+  result_non_numeric <- rescale01(non_numeric_vector),
+  error = function(e) print(e$message)
+)
+
+```
+
+
+##### Question 3.
+
+Write a function that takes two vectors of the same length and returns the number of positions that have an NA in both vectors. If the vectors are not the same length, stop the function and return the message "vectors must be the same length".
+
+```{r}
+
+both_na <- function(vector1, vector2) {
+  if (length(vector1) != length(vector2)) {
+    stop("vectors must be the same length")
+  }
+
+  na_positions <- which(is.na(vector1) & is.na(vector2))
+  num_both_na <- length(na_positions)
+
+  return(num_both_na)
+}
+
+# Test cases
+
+# Vectors with the same length and some NA positions
+vec1 <- c(1, NA, 3, 4, NA)
+vec2 <- c(NA, 2, 3, NA, 5)
+result1 <- both_na(vec1, vec2)
+print(result1)  # Should print 2
+
+# Vectors with different lengths
+vec3 <- c(1, 2, 3)
+vec4 <- c(NA, 2, 3, 4)
+tryCatch(
+  result2 <- both_na(vec3, vec4),
+  error = function(e) print(e$message)
+)
+
+
+```
+
+
+##### Question 4 
+
+Implement a fizzbuzz function. It takes a single number as input. If the number is divisible by three, it returns “fizz”. If it’s divisible by five it returns “buzz”. If it’s divisible by three and five, it returns “fizzbuzz”. Otherwise, it returns the number. 
+
+```{r}
+fizzbuzz <- function(num) {
+  if (num %% 3 == 0 && num %% 5 == 0) {
+    return("fizzbuzz")
+  } else if (num %% 3 == 0) {
+    return("fizz")
+  } else if (num %% 5 == 0) {
+    return("buzz")
+  } else {
+    return(num)
+  }
+}
+
+# Test cases
+result1 <- fizzbuzz(9)
+print(result1)  # Should print "fizz"
+
+result2 <- fizzbuzz(10)
+print(result2)  # Should print "buzz"
+
+result3 <- fizzbuzz(15)
+print(result3)  # Should print "fizzbuzz"
+
+result4 <- fizzbuzz(7)
+print(result4)  # Should return 7
+
+
+```
+
+
+##### Question 5 
+
+Rewrite the function below using `cut()` to simplify the set of nested if-else statements. 
+
+```
+get_temp_desc <- function(temp) {
+  if (temp <= 0) {
+    "freezing"
+  } else if (temp <= 10) {
+    "cold"
+  } else if (temp <= 20) {
+    "cool"
+  } else if (temp <= 30) {
+    "warm"
+  } else {
+    "hot"
+  } 
+}
+
+```
+
+```{r}
+get_temp_desc <- function(temp) {
+  temperature_category <- cut(temp, breaks = c(-Inf, 0, 10, 20, 30, Inf), labels = c("freezing", "cold", "cool", "warm", "hot"))
+  return(as.character(temperature_category))
+}
+result <- get_temp_desc(25)
+print(result)
+
+
+```
+

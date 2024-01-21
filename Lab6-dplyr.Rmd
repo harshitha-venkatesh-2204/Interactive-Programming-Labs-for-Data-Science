@@ -1,0 +1,171 @@
+---
+title: "Lab6-dplyr"
+output: html_document
+date: "2024-01-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### Question 1. 
+
+Use the following definitions of cancellation codes to add a "Code" column to hflights, then use tail(hflights$Code[!is.na(hflights$Code)], n = 20) to see that your replacement worked by looking at the last 20 entries that are not NA. 
+
+"A"   =    "carrier"
+"B"  =    "weather"
+"C"   =   "FF"
+"D"   =   "security"
+"E"   =   "not cancelled"
+
+```{r}
+library(dplyr)
+library(hflights)
+
+# Assuming 'hflights' is your dataset
+
+# Define cancellation codes
+cancellation_codes <- c("A" = "carrier", "B" = "weather", "C" = "FF", "D" = "security", "E" = "not cancelled")
+
+# Add 'Code' column based on cancellation codes
+hflights$Code <- cancellation_codes[hflights$CancellationCode]
+
+# Display the last 20 entries with non-NA 'Code'
+tail(hflights$Code[!is.na(hflights$Code)], n = 20)
+
+
+```
+
+#### Question 2. 
+
+What does the any_of() function do? Why might it be helpful in conjunction with this vector when analyzing nycflights13 data?
+
+`vars <- c("year", "month", "day", "dep_delay", "arr_delay")`
+
+```{r}
+library(dplyr)
+library(hflights)
+
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+# Assuming df is your dataset
+selected_columns <-  hflights %>% select(any_of(vars))
+selected_columns
+
+
+
+```
+
+#### Question 3. 
+
+Does the result of running the following code surprise you? How does the select helpers deal with case by default? How can you change that default?
+
+`select(flights, contains("TIME"))`
+
+```{r}
+select(hflights, contains("TIME", ignore.case = TRUE))
+
+```
+
+#### Question 4. 
+
+Use select to show only the columns of hflights that have the word time or delay in the variable name or have the carrier id.
+
+```{r}
+library(dplyr)
+
+selected_columns <- hflights %>%
+  select(contains("time", ignore.case = TRUE) | contains("delay", ignore.case = TRUE) | matches("carrier id", ignore.case = TRUE))
+
+head(selected_columns)
+
+```
+
+#### Question 5. 
+
+Find all flights from nycflights13 that had an arrival delay of two or more hours. Put the arrival delay first in your output so you can check it.
+
+```{r}
+library(dplyr)
+
+delayed_flights <- nycflights13::flights %>%
+  filter(arr_delay >= 120) %>%
+  arrange(arr_delay) %>%
+  select(arr_delay, everything())
+
+head(delayed_flights)
+
+
+
+```
+
+#### Question 6. 
+
+Find all flights from nycflights13 that were operated by United, American, or Delta.
+
+```{r}
+
+library(dplyr)
+
+selected_flights <- nycflights13::flights %>%
+  filter(carrier %in% c("UA", "AA", "DL"))
+
+head(selected_flights)
+
+
+```
+
+#### Question 7.
+
+Find all flights from nycflights13 that arrived more than two hours late.
+
+```{r}
+library(dplyr)
+
+late_flights <- nycflights13::flights %>%
+  filter(arr_delay > 120)
+
+head(late_flights)
+
+
+```
+
+#### Question 8. 
+
+Find all flights from nycflights13 that had a departure delay by at least an hour
+
+```{r}
+library(dplyr)
+
+delayed_departures <- nycflights13::flights %>%
+  filter(dep_delay >= 60)
+
+head(delayed_departures)
+
+
+```
+
+#### Question 9. 
+
+Sort flights from nycflights13 to find the 5 most flights whose arrival was delayed the longest. Find the 5 flights that left earliest (most ahead of scheduled departure time). 
+```{r}
+library(dplyr)
+
+# Top 5 flights with the longest arrival delays
+top_delayed_flights <- nycflights13::flights %>%
+  arrange(desc(arr_delay)) %>%
+  head(5)
+
+# Top 5 flights that left earliest
+earliest_departures <- nycflights13::flights %>%
+  arrange(dep_time) %>%
+  head(5)
+
+# Display the results
+print(top_delayed_flights)
+
+
+print(earliest_departures)
+
+
+```

@@ -1,0 +1,71 @@
+---
+title: "Lab6-Grouping"
+output: html_document
+date: "2024-01-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### Introduction
+
+Reference the [tidyverse style guide](https://style.tidyverse.org/) while completing the exercises. 
+
+These exercises are ungraded.
+
+#### Question 1. 
+
+Using the nycflights13 data, calculate a new variable called "hr_delay" and arrange the flights dataset in order of the arrival delays in hours (longest delays at the top). Put the new variable you created just before the departure time. Hint: use the experimental argument .before. 
+
+```{r}
+
+
+library(nycflights13)
+library(dplyr)
+
+data("flights")
+
+
+flights <- flights %>%
+  mutate(hr_delay = arr_delay / 60) %>%
+  arrange(desc(hr_delay))
+
+
+flights <- flights %>%
+  select(hr_delay, everything())
+
+
+head(flights)
+
+
+
+```
+#### Question 2. 
+
+What proportion of flights in nycflights13 are delayed by more than on hour? 
+
+```{r}
+
+
+library(nycflights13)
+library(dplyr)
+
+
+data("flights")
+
+proportion_delayed <- flights %>%
+  mutate(delayed = ifelse(arr_delay > 60, 1, 0)) %>%
+  summarise(proportion = mean(delayed, na.rm = TRUE))
+
+
+proportion_delayed$proportion
+
+
+
+
+```
+
+

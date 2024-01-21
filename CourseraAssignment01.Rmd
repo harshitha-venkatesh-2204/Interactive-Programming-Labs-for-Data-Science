@@ -1,0 +1,110 @@
+---
+title: "Assignment01Coursera"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+date: "2024-01-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+# Please complete all the tasks listed below. After completing the tasks download the .Rmd file and upload in the peer review item for grading.
+
+# Additionally please write text between the code chunks explaining what each code chunk is about.
+
+1.a bulleted list with sub-bullets under at least one item (10 pt)
+
+
+
+* Phone
+    - Samsung
+    - Apple
+* Tv set
+    - Samsung
+    - Sony
+
+
+
+2.a numbered list (10 pt)
+
+ 1. Allie
+ 2. Alizeh
+ 3. Amit
+
+
+
+3.some words italicized (5 pt)
+ *Hello*
+
+4.some words in bold print (5 pt)
+
+**Hello**
+
+5.two levels of headers (10 pt)
+
+# Level 1 Header
+## Level 2 Header
+
+
+
+
+6.the results of some R code without showing the code (10 pt)
+```{r code}
+
+result <- 2 + 3
+result
+
+
+
+```
+
+
+7.a table of text at least 3 columns wide and 3 rows long (10 pt)
+```{r table}
+
+
+transactions <- data.frame(
+ ICICI = c("Chennai", "Bangalore", "Hyderabad"),
+ HDFC = c("Delhi", "Bangalore", "Mumbai"),
+ SBI = c("Bangalore", "Chennai", "Kolkata")
+)
+transactions
+
+```
+
+
+8.a plot (show the code that generates the plot) (10 pt)
+```{r plot}
+
+plot(1:50, (1:50)^2, main = "Data Analysis", xlab = "DataX", ylab = "DataY")
+
+
+```
+
+
+
+
+9.your session info (as output from R) (10 pt)
+```{r session}
+
+sessionInfo()
+
+
+```
+
+
+10.Execution of .Rmd file (10 pt)
+
+11. Upload and execution of knitted pdf (10 pt)
+
+
