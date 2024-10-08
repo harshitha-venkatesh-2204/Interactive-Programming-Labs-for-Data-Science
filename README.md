@@ -24,9 +24,8 @@ To get started, you need to install R and RStudio on your machine. Follow these 
 
 1. Download and install R from [CRAN](https://cran.r-project.org).
 2. Download and install RStudio from [RStudio's website](https://www.rstudio.com/products/rstudio/download/).
-3. Clone this repository to your local machine using:
-   ```bash
-   git clone https://github.com/yourusername/R-programming-for-Data-Science.git
+3. Clone this repository to your local machine.
+
 
 ## Lab Programs 🧪
 
