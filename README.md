@@ -1,4 +1,4 @@
-# R Programming for Data Science 📊📈
+# Interactive-Programming-Labs-for-Data-Science 📊📈
 
 Welcome to the **R Programming for Data Science** repository! This repository contains lab programs and resources designed to help you master R programming and its applications in data science.
 
